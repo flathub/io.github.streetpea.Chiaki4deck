@@ -121,12 +121,24 @@ modules:
       - /lib/pkgconfig
       - /include
 
+  - name: speexDSP
+    buildsystem: simple
+    build-commands:
+      - ./autogen.sh
+      - ./configure --prefix=/app
+      - make
+      - make install
+    sources:
+    - type: git
+      url: https://gitlab.xiph.org/xiph/speexdsp.git
+      tag: SpeexDSP-1.2.1
+
   - name: chiaki4deck
     buildsystem: cmake-ninja
     builddir: true
     sources:
       - type: git
         url: https://github.com/streetpea/chiaki4deck.git
-        commit: "4bd87c3fee1eeab8e6c8d97ddbf2a5ab32f8c711"
+        commit: "f68a3960631592888d1a3f8037302cb1d87f8d46"
     post-install:
       - "install -Dm755 ../scripts/psn-account-id.py /app/bin/psn-account-id"
