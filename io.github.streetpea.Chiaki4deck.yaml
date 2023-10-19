@@ -139,6 +139,6 @@ modules:
     sources:
       - type: git
         url: https://github.com/streetpea/chiaki4deck.git
-        commit: "12dd35a0e07ba7866014c56a369120b2345d804e"
+        commit: "dd4bbc1ff31a197afea6e79ad6f9421633a78135"
     post-install:
       - "install -Dm755 ../scripts/psn-account-id.py /app/bin/psn-account-id"
