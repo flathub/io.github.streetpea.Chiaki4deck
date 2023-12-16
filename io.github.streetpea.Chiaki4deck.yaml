@@ -16,6 +16,7 @@ finish-args:
   - --socket=pulseaudio
   - --own-name=org.kde.*
   - --env=DBUS_FATAL_WARNINGS=0
+  - --env=RADV_PERFTEST=video_decode
   - --talk-name=org.freedesktop.ScreenSaver
   - --filesystem=xdg-run/pipewire-0
   - --filesystem=xdg-run/gamescope-0
@@ -214,7 +215,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/streetpea/chiaki4deck.git
-        commit: "bf62569fa98d9efc0ea2b9715f1171b1e9dbf764"
+        commit: "a17e464fae05a3de2a248e708e9164e1213d871a"
     post-install:
       - "install -Dm755 ../scripts/psn-account-id.py /app/bin/psn-account-id"
       - "install -Dm755 ../scripts/vulkan-gamescope-layers/VkLayer_FROG_gamescope_wsi.x86_64.json /app/share/vulkan/implicit_layer.d/VkLayer_FROG_gamescope_wsi.x86_64.json"
