@@ -2,8 +2,6 @@ app-id: io.github.streetpea.Chiaki4deck
 runtime: org.kde.Platform
 runtime-version: '6.6'
 sdk: org.kde.Sdk
-base: io.qt.qtwebengine.BaseApp
-base-version: '6.6'
 command: chiaki
 rename-icon: chiaki4deck
 rename-desktop-file: chiaki4deck.desktop
@@ -16,11 +14,8 @@ finish-args:
   - --device=all
   - --allow=bluetooth
   - --socket=pulseaudio
-  - --own-name=org.kde.*
   - --env=DBUS_FATAL_WARNINGS=0
   - --env=RADV_PERFTEST=video_decode
-  - --env=QTWEBENGINEPROCESS_PATH=/app/bin/QtWebEngineProcess
-  - --env=QML_IMPORT_PATH=/app/qml
   - --env=QML_DISABLE_DISK_CACHE=1
   - --env=SDL_AUDIODRIVER=pipewire
   - --talk-name=org.freedesktop.ScreenSaver
@@ -28,9 +23,6 @@ finish-args:
   - --filesystem=xdg-run/pipewire-0
   - --filesystem=xdg-run/gamescope-0
   - --filesystem=host
-
-cleanup-commands:
-  - /app/cleanup-BaseApp.sh
 
 modules:
   - name: protobuf-compilers
@@ -50,13 +42,9 @@ modules:
     sources:
       - type: git
         url: https://github.com/haasn/libplacebo
-        tag: v6.338.1
+        commit: c320f61e601caef2be081ce61138e5d51c1be21d
       - type: patch
         path: 0001-Vulkan-Don-t-try-to-reuse-old-swapchain.patch
-      - type: patch
-        path: libplacebo-pr238.patch
-      - type: patch
-        path: libplacebo-pr239.patch
     modules:
       - name: shaderc
         buildsystem: cmake-ninja
@@ -264,7 +252,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/streetpea/chiaki4deck.git
-        commit: "6a4c7cbd8cbd26ae9663dbcfc5f2ac95e9d7cbec"
+        commit: "4f5da5444433fa610379961c0cc03ef035436676"
     post-install:
       - "install -Dm755 ../scripts/psn-account-id.py /app/bin/psn-account-id"
       - "install -Dm755 ../scripts/vulkan-gamescope-layers/VkLayer_FROG_gamescope_wsi.x86_64.json /app/share/vulkan/implicit_layer.d/VkLayer_FROG_gamescope_wsi.x86_64.json"
