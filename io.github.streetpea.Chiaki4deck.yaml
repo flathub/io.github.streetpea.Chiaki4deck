@@ -111,12 +111,14 @@ modules:
       - --enable-hwaccel=hevc_vulkan
     sources:
       - type: archive
-        url: https://ffmpeg.org/releases/ffmpeg-6.1.tar.xz
-        sha256: 488c76e57dd9b3bee901f71d5c95eaf1db4a5a31fe46a28654e837144207c270
+        url: https://ffmpeg.org/releases/ffmpeg-7.0.tar.xz
+        sha256: 4426a94dd2c814945456600c8adfc402bee65ec14a70e8c531ec9a2cd651da7b
       - type: patch
         path: 0001-lavc-vaapi_hevc-Fixup-invalid-references.patch
       - type: patch
         path: 0001-lavc-vaapi_h264-Fixup-invalid-references.patch
+      - type: patch
+        path: 0001-vulkan-ignore-frames-without-hw-context.patch
 
   - name: python3-google
     buildsystem: simple
@@ -242,6 +244,21 @@ modules:
         url: https://gitlab.xiph.org/xiph/speexdsp.git
         tag: SpeexDSP-1.2.1
 
+  - name: json-c
+    buildsystem: cmake-ninja
+    sources:
+      - type: git
+        url: https://github.com/json-c/json-c.git
+        tag: json-c-0.17-20230812
+
+  - name: miniupnpc
+    buildsystem: cmake-ninja
+    subdir: miniupnpc
+    sources:
+    - type: git
+      url: https://github.com/miniupnp/miniupnp
+      tag: miniupnpc_2_2_7
+
   - name: vulkanso
     buildsystem: simple
     build-commands:
@@ -255,7 +272,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/streetpea/chiaki4deck.git
-        commit: 63d83bf3611a8e0d1e809eb0d17eeb8124220e95
+        commit: fdafdd22782752e5f645a61dd6bc7b08de5acb13
     post-install:
       - install -Dm755 ../scripts/psn-account-id.py /app/bin/psn-account-id
       - install -Dm755 ../scripts/vulkan-gamescope-layers/VkLayer_FROG_gamescope_wsi.x86_64.json
