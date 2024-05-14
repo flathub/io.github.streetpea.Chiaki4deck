@@ -9,7 +9,7 @@ separate-locales: false
 finish-args:
   - --share=network
   - --share=ipc
-  - --socket=fallback-x11
+  - --socket=x11
   - --socket=wayland
   - --device=all
   - --allow=bluetooth
@@ -111,8 +111,8 @@ modules:
       - --enable-hwaccel=hevc_vulkan
     sources:
       - type: archive
-        url: https://ffmpeg.org/releases/ffmpeg-7.0.tar.xz
-        sha256: 4426a94dd2c814945456600c8adfc402bee65ec14a70e8c531ec9a2cd651da7b
+        url: https://ffmpeg.org/releases/ffmpeg-6.1.tar.xz
+        sha256: 488c76e57dd9b3bee901f71d5c95eaf1db4a5a31fe46a28654e837144207c270
       - type: patch
         path: 0001-lavc-vaapi_hevc-Fixup-invalid-references.patch
       - type: patch
@@ -272,7 +272,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/streetpea/chiaki4deck.git
-        commit: fdafdd22782752e5f645a61dd6bc7b08de5acb13
+        commit: 45db8614ab7a2c92e1ed3c4caae5c99759f90590
     post-install:
       - install -Dm755 ../scripts/psn-account-id.py /app/bin/psn-account-id
       - install -Dm755 ../scripts/vulkan-gamescope-layers/VkLayer_FROG_gamescope_wsi.x86_64.json
