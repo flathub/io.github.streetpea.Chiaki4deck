@@ -10,7 +10,6 @@ finish-args:
   - --share=network
   - --share=ipc
   - --socket=x11
-  - --socket=wayland
   - --device=all
   - --allow=bluetooth
   - --socket=pulseaudio
@@ -272,7 +271,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/streetpea/chiaki4deck.git
-        commit: 45db8614ab7a2c92e1ed3c4caae5c99759f90590
+        commit: 52cb9a693c036ea10f353b9a9eabaeb55946cea6
     post-install:
       - install -Dm755 ../scripts/psn-account-id.py /app/bin/psn-account-id
       - install -Dm755 ../scripts/vulkan-gamescope-layers/VkLayer_FROG_gamescope_wsi.x86_64.json
