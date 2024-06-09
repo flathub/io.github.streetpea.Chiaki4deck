@@ -271,7 +271,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/streetpea/chiaki4deck.git
-        commit: f750acd358ba67bab850f92750107fe72cd4d9b5
+        commit: a49c69dead34f94b128539e08b3548e74831799a
     post-install:
       - install -Dm755 ../scripts/psn-account-id.py /app/bin/psn-account-id
       - install -Dm755 ../scripts/vulkan-gamescope-layers/VkLayer_FROG_gamescope_wsi.x86_64.json
