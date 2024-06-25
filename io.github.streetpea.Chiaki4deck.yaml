@@ -63,15 +63,15 @@ modules:
         sources:
           - type: git
             url: https://github.com/google/shaderc.git
-            tag: v2024.0
-            commit: d792558a8902cb39b1c237243cc4edab226513a5
+            tag: v2024.1
+            commit: 47a9387ef5b3600d30d84c71ec77a59dc7db46fa
             x-checker-data:
               type: git
               tag-pattern: ^v(\d{4}\.\d{1,2})$
           - type: git
             url: https://github.com/KhronosGroup/SPIRV-Tools.git
-            tag: v2023.2
-            commit: 44d72a9b36702f093dd20815561a56778b2d181e
+            tag: v2024.3
+            commit: 0cfe9e7219148716dfd30b37f4d21753f098707a
             dest: third_party/spirv-tools
             x-checker-data:
               type: git
@@ -83,8 +83,8 @@ modules:
             dest: third_party/spirv-headers
           - type: git
             url: https://github.com/KhronosGroup/glslang.git
-            tag: 14.1.0
-            commit: ee2f5d09eaf8f4e8d0d598bd2172fce290d4ca60
+            tag: 14.3.0
+            commit: fa9c3deb49e035a8abcabe366f26aac010f6cbfb
             dest: third_party/glslang
             x-checker-data:
               type: git
@@ -255,9 +255,9 @@ modules:
     buildsystem: cmake-ninja
     subdir: miniupnpc
     sources:
-    - type: git
-      url: https://github.com/miniupnp/miniupnp
-      tag: miniupnpc_2_2_7
+      - type: git
+        url: https://github.com/miniupnp/miniupnp
+        tag: miniupnpc_2_2_7
 
   - name: vulkanso
     buildsystem: simple
