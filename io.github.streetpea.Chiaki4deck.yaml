@@ -271,7 +271,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/streetpea/chiaki-ng.git
-        commit: 4adbe34be596c26380c591feb8a7aee5d0e8488a
+        commit: 68bc07defc90763f65de903119b8ec268470f18e
     post-install:
       - install -Dm755 ../scripts/psn-account-id.py /app/bin/psn-account-id
       - install -Dm755 ../scripts/vulkan-gamescope-layers/VkLayer_FROG_gamescope_wsi.x86_64.json
