@@ -1,6 +1,6 @@
 app-id: io.github.streetpea.Chiaki4deck
 runtime: org.kde.Platform
-runtime-version: '6.7'
+runtime-version: '6.8'
 sdk: org.kde.Sdk
 command: chiaki
 rename-icon: chiaking
@@ -110,12 +110,8 @@ modules:
       - --enable-hwaccel=hevc_vulkan
     sources:
       - type: archive
-        url: https://ffmpeg.org/releases/ffmpeg-6.1.2.tar.xz
-        sha256: 3b624649725ecdc565c903ca6643d41f33bd49239922e45c9b1442c63dca4e38
-      - type: patch
-        path: 0001-lavc-vaapi_hevc-Fixup-invalid-references.patch
-      - type: patch
-        path: 0001-lavc-vaapi_h264-Fixup-invalid-references.patch
+        url: https://ffmpeg.org/releases/ffmpeg-7.1.tar.xz
+        sha256: 40973d44970dbc83ef302b0609f2e74982be2d85916dd2ee7472d30678a7abe6
       - type: patch
         path: 0001-vulkan-ignore-frames-without-hw-context.patch
 
@@ -271,7 +267,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/streetpea/chiaki-ng.git
-        commit: 68bc07defc90763f65de903119b8ec268470f18e
+        commit: 4159e47df0d7d6143e3608e88935b1a19eb3c371
     post-install:
       - install -Dm755 ../scripts/psn-account-id.py /app/bin/psn-account-id
       - install -Dm755 ../scripts/vulkan-gamescope-layers/VkLayer_FROG_gamescope_wsi.x86_64.json
