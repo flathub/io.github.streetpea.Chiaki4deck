@@ -2,6 +2,8 @@ app-id: io.github.streetpea.Chiaki4deck
 runtime: org.kde.Platform
 runtime-version: '6.8'
 sdk: org.kde.Sdk
+base: io.qt.qtwebengine.BaseApp
+base-version: '6.8'
 command: chiaki
 rename-icon: chiaking
 rename-desktop-file: chiaking.desktop
@@ -13,6 +15,8 @@ finish-args:
   - --device=all
   - --allow=bluetooth
   - --socket=pulseaudio
+  - --env=QTWEBENGINEPROCESS_PATH=/app/bin/QtWebEngineProcess
+  - --env=LD_LIBRARY_PATH=/app/lib:/app/lib64
   - --env=DBUS_FATAL_WARNINGS=0
   - --env=QML_DISABLE_DISK_CACHE=1
   - --env=SDL_AUDIODRIVER=pipewire
@@ -22,6 +26,15 @@ finish-args:
   - --filesystem=xdg-run/gamescope-0
   - --filesystem=host
 
+cleanup-commands:
+  - /app/cleanup-BaseApp.sh
+
+build-options:
+  arch:
+    aarch64:
+      prepend-pkg-config-path: /app/lib/aarch64-linux-gnu/pkgconfig
+    x86_64:
+      prepend-pkg-config-path: "/app/lib/pkgconfig:/app/lib64/pkgconfig:/app/lib/x86_64-linux-gnu/pkgconfig:/app/lib64/x86_64-linux-gnu/pkgconfig"
 modules:
   - name: protobuf-compilers
     sources:
@@ -267,7 +280,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/streetpea/chiaki-ng.git
-        commit: 4159e47df0d7d6143e3608e88935b1a19eb3c371
+        commit: 699b4f676d120aa352fb2cc2619f932df5b72956
     post-install:
       - install -Dm755 ../scripts/psn-account-id.py /app/bin/psn-account-id
       - install -Dm755 ../scripts/vulkan-gamescope-layers/VkLayer_FROG_gamescope_wsi.x86_64.json
