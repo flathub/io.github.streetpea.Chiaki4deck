@@ -34,7 +34,7 @@ build-options:
     aarch64:
       prepend-pkg-config-path: /app/lib/aarch64-linux-gnu/pkgconfig
     x86_64:
-      prepend-pkg-config-path: "/app/lib/pkgconfig:/app/lib64/pkgconfig:/app/lib/x86_64-linux-gnu/pkgconfig:/app/lib64/x86_64-linux-gnu/pkgconfig"
+      prepend-pkg-config-path: /app/lib/pkgconfig:/app/lib64/pkgconfig:/app/lib/x86_64-linux-gnu/pkgconfig:/app/lib64/x86_64-linux-gnu/pkgconfig
 modules:
   - name: protobuf-compilers
     sources:
@@ -75,15 +75,15 @@ modules:
         sources:
           - type: git
             url: https://github.com/google/shaderc.git
-            tag: v2024.0
-            commit: d792558a8902cb39b1c237243cc4edab226513a5
+            tag: v2024.3
+            commit: ff84893dd52d28f0b1737d2635733d952013bd9c
             x-checker-data:
               type: git
               tag-pattern: ^v(\d{4}\.\d{1,2})$
           - type: git
             url: https://github.com/KhronosGroup/SPIRV-Tools.git
-            tag: v2023.2
-            commit: 44d72a9b36702f093dd20815561a56778b2d181e
+            tag: v2024.3
+            commit: 0cfe9e7219148716dfd30b37f4d21753f098707a
             dest: third_party/spirv-tools
             x-checker-data:
               type: git
@@ -95,8 +95,8 @@ modules:
             dest: third_party/spirv-headers
           - type: git
             url: https://github.com/KhronosGroup/glslang.git
-            tag: 14.1.0
-            commit: ee2f5d09eaf8f4e8d0d598bd2172fce290d4ca60
+            tag: 15.0.0
+            commit: 46ef757e048e760b46601e6e77ae0cb72c97bd2f
             dest: third_party/glslang
             x-checker-data:
               type: git
@@ -263,9 +263,9 @@ modules:
     buildsystem: cmake-ninja
     subdir: miniupnpc
     sources:
-    - type: git
-      url: https://github.com/miniupnp/miniupnp
-      tag: miniupnpc_2_2_7
+      - type: git
+        url: https://github.com/miniupnp/miniupnp
+        tag: miniupnpc_2_2_7
 
   - name: vulkanso
     buildsystem: simple
