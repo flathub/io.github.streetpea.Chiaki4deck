@@ -56,6 +56,8 @@ modules:
         tag: v7.349.0
       - type: patch
         path: 0001-Vulkan-Don-t-try-to-reuse-old-swapchain.patch
+      - type: patch
+        path: 0002-Vulkan-use-16bit-for-p010.patch
 
   - name: ffmpeg
     cleanup:
@@ -205,13 +207,30 @@ modules:
       url: https://github.com/miniupnp/miniupnp
       tag: miniupnpc_2_2_7
 
+  - name: SDL2
+    config-opts:
+      - --disable-arts
+      - --disable-esd
+      - --disable-nas
+      - --disable-alsa
+      - --disable-oss
+      - --disable-sndio
+      - --enable-video-wayland
+      - --enable-wayland-shared=no
+      - --enable-video-kmsdrm
+      - --disable-rpath
+    sources:
+      - type: git
+        url: https://github.com/libsdl-org/SDL.git
+        tag: release-2.30.8
+
   - name: chiaki-ng
     buildsystem: cmake-ninja
     builddir: true
     sources:
       - type: git
         url: https://github.com/streetpea/chiaki-ng.git
-        commit: 51fdfe625ca6a25fa12d150f346c756ccb3ad246
+        commit: 7d1aaf2c76201cfe57141f46ee96ccf929617fa8
     post-install:
       - install -Dm755 ../scripts/psn-account-id.py /app/bin/psn-account-id
       - install -Dm755 ../scripts/vulkan-gamescope-layers/VkLayer_FROG_gamescope_wsi.x86_64.json
