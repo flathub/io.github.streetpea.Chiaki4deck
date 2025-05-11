@@ -25,7 +25,10 @@ finish-args:
   - --system-talk-name=org.freedesktop.login1
   - --filesystem=xdg-run/pipewire-0
   - --filesystem=xdg-run/gamescope-0
-  - --filesystem=host
+  - --filesystem=host-os:ro
+  - --filesystem=xdg-download
+  - --filesystem=xdg-documents
+  - --filesystem=~/.steam/steam
 
 cleanup-commands:
   - /app/cleanup-BaseApp.sh
@@ -33,7 +36,7 @@ cleanup-commands:
 build-options:
   arch:
     aarch64:
-      prepend-pkg-config-path: /app/lib/aarch64-linux-gnu/pkgconfig
+      prepend-pkg-config-path: "/app/lib/pkgconfig:/app/lib64/pkgconfig:/app/lib/aarch64-linux-gnu/pkgconfig:/app/lib64/aarch64-linux-gnu/pkgconfig"
     x86_64:
       prepend-pkg-config-path: "/app/lib/pkgconfig:/app/lib64/pkgconfig:/app/lib/x86_64-linux-gnu/pkgconfig:/app/lib64/x86_64-linux-gnu/pkgconfig"
 modules:
@@ -202,7 +205,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/streetpea/chiaki-ng.git
-        commit: e57c8ed86332a2802991ac25ab2e2bf10a6312c3
+        commit: 0b9923b979ebbe1d55c9454a640489669c57b3a8
     post-install:
       - install -Dm755 ../scripts/psn-account-id.py /app/bin/psn-account-id
       - install -Dm755 ../scripts/vulkan-gamescope-layers/VkLayer_FROG_gamescope_wsi.x86_64.json
