@@ -57,11 +57,9 @@ modules:
     sources:
       - type: git
         url: https://github.com/haasn/libplacebo
-        tag: v7.349.0
+        tag: 1f1ba06aa2a83a2c75ade4150b7c0bba10531088
       - type: patch
         path: 0001-Vulkan-Don-t-try-to-reuse-old-swapchain.patch
-      - type: patch
-        path: 0002-Vulkan-use-16bit-for-p010.patch
 
   - name: ffmpeg
     cleanup:
@@ -144,7 +142,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/libusb/hidapi.git
-        tag: hidapi-0.14.0
+        tag: hidapi-0.15.0
     cleanup:
       - /lib/*.la
       - /lib/pkgconfig
@@ -205,7 +203,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/streetpea/chiaki-ng.git
-        commit: 0b9923b979ebbe1d55c9454a640489669c57b3a8
+        commit: 3f8fd712cbc0becd3a5ea588340d72bf451c12b5
     post-install:
       - install -Dm755 ../scripts/psn-account-id.py /app/bin/psn-account-id
       - install -Dm755 ../scripts/vulkan-gamescope-layers/VkLayer_FROG_gamescope_wsi.x86_64.json
