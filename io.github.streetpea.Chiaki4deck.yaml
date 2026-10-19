@@ -178,5 +178,4 @@ modules:
     sources:
       - type: git
         url: https://github.com/streetpea/chiaki-ng.git
-        tag: v1.10.0
-        commit: 0c4a45df0cae2af2ba2daef84e881850b07038a3
+        commit: c8bea2642d0e95402f373af55584a3b98cd89417
