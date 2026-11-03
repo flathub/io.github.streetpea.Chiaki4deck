@@ -41,6 +41,13 @@ cleanup:
 cleanup-commands:
   - /app/cleanup-BaseApp.sh
 
+build-options:
+  arch:
+    aarch64:
+      prepend-pkg-config-path: "/app/lib/pkgconfig:/app/lib64/pkgconfig:/app/lib/aarch64-linux-gnu/pkgconfig:/app/lib64/aarch64-linux-gnu/pkgconfig"
+    x86_64:
+      prepend-pkg-config-path: "/app/lib/pkgconfig:/app/lib64/pkgconfig:/app/lib/x86_64-linux-gnu/pkgconfig:/app/lib64/x86_64-linux-gnu/pkgconfig"
+
 modules:
   - name: protobuf-compilers
     buildsystem: cmake-ninja
@@ -49,27 +56,100 @@ modules:
       - -Dprotobuf_BUILD_SHARED_LIBS=OFF
       - -Dprotobuf_BUILD_PROTOBUF_BINARIES=ON
       - -Dprotobuf_BUILD_EXAMPLES=OFF
+    cleanup:
+      - /include
+      - /lib/*.a
+      - /lib/cmake
+      - /lib/pkgconfig
     sources:
       - type: archive
         url: https://github.com/protocolbuffers/protobuf/releases/download/v21.12/protobuf-cpp-3.21.12.tar.gz
         sha256: 4eab9b524aa5913c6fffb20b2a8abf5ef7f95a80bc0701f3a6dbb4c607f73460
 
-  # Dependency of chiaki-ng/third-party/cpp-steam-tools
+  - name: libevent
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+      - -DEVENT__DISABLE_SAMPLES:BOOL=OFF
+      - -DEVENT__DISABLE_TESTS:BOOL=OFF
+    sources:
+      - type: git
+        url: https://github.com/libevent/libevent
+        tag: release-2.1.13-stable
+        commit: 79ddfb460847999b807cba76d04e73891f29c6ee
+    cleanup:
+      - /include
+      - /lib/pkgconfig
+
   - name: libplacebo
     buildsystem: meson
     config-opts:
       - -Dvulkan=enabled
       - -Dshaderc=enabled
+    cleanup:
+      - /include
+      - /lib/pkgconfig
     sources:
       - type: git
         url: https://github.com/haasn/libplacebo
-        tag: v7.360.1
-        commit: cee9b076f2c63104ccfd497fa79c39a867293ec4
+        tag: v7.387.0
+        commit: 275f7dea27924cdd34ab2e6c20e448b6bc4fab65
 
-  - name: ffmpeg
+  - name: nv-codec-headers
+    only-arches:
+      - x86_64
+    buildsystem: simple
+    build-commands:
+      - make PREFIX=/app install
+    sources:
+      - type: git
+        url: https://github.com/FFmpeg/nv-codec-headers.git
+        tag: n13.1.15.0
+        commit: 0a6fba9a2820628b8103464f4c8753ee05838baa
+
+  - name: ffmpeg-x86_64
+    only-arches:
+      - x86_64
     cleanup:
       - /bin/ffmpeg
       - /lib/*.so
+      - /include
+      - /lib/pkgconfig
+      - /share/ffmpeg/examples
+      - /share/ffmpeg
+    config-opts:
+      - --disable-all
+      - --enable-libdrm
+      - --enable-avcodec
+      - --enable-vulkan
+      - --enable-decoder=h264
+      - --enable-decoder=hevc
+      - --enable-decoder=h264_cuvid
+      - --enable-decoder=hevc_cuvid
+      - --enable-hwaccel=h264_vaapi
+      - --enable-hwaccel=hevc_vaapi
+      - --enable-hwaccel=h264_vulkan
+      - --enable-hwaccel=hevc_vulkan
+      - --enable-hwaccel=h264_nvdec
+      - --enable-hwaccel=hevc_nvdec
+      - --enable-cuvid
+      - --enable-nvdec
+      - --enable-ffnvcodec
+    sources:
+      - type: archive
+        url: https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.xz
+        sha256: 8c3850283eb25fa026482078a04051e0be17347b09ef81a0849bec15a96e002e
+      - type: patch
+        path: 0001-vulkan-ignore-frames-without-hw-context.patch
+
+  - name: ffmpeg-aarch64
+    only-arches:
+      - aarch64
+    cleanup:
+      - /bin/ffmpeg
+      - /lib/*.so
+      - /include
+      - /lib/pkgconfig
       - /share/ffmpeg/examples
       - /share/ffmpeg
     config-opts:
@@ -85,10 +165,12 @@ modules:
       - --enable-hwaccel=hevc_vulkan
     sources:
       - type: archive
-        url: https://ffmpeg.org/releases/ffmpeg-7.1.tar.xz
-        sha256: 40973d44970dbc83ef302b0609f2e74982be2d85916dd2ee7472d30678a7abe6
+        url: https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.xz
+        sha256: 8c3850283eb25fa026482078a04051e0be17347b09ef81a0849bec15a96e002e
       - type: patch
         path: 0001-vulkan-ignore-frames-without-hw-context.patch
+
+  - python3-modules.yaml
 
   - name: hidapi
     buildsystem: cmake-ninja
@@ -99,8 +181,10 @@ modules:
         url: https://github.com/libusb/hidapi.git
         tag: hidapi-0.15.0
         commit: d6b2a974608dec3b76fb1e36c189f22b9cf3650c
-
-  - python3-modules.yaml
+    cleanup:
+      - /lib/*.la
+      - /lib/pkgconfig
+      - /include
 
   - name: speexDSP
     buildsystem: simple
@@ -117,13 +201,11 @@ modules:
 
   - name: json-c
     buildsystem: cmake-ninja
-    config-opts:
-      - -DCMAKE_POLICY_VERSION_MINIMUM=3.5
     sources:
       - type: git
         url: https://github.com/json-c/json-c.git
-        tag: json-c-0.18-20240915
-        commit: 41a55cfcedb54d9c1874f2f0eb07b504091d7e37
+        tag: json-c-0.19-20260627
+        commit: aa716cd8d663c976b99b0f30f102ee1d8ef63146
 
   - name: miniupnpc
     buildsystem: cmake-ninja
@@ -131,10 +213,9 @@ modules:
     sources:
     - type: git
       url: https://github.com/miniupnp/miniupnp
-      tag: miniupnpd_2_3_10
-      commit: b5e5d2eb069822b7f00d56c8e61033b9d500e60c
+      tag: miniupnpc_2_3_3
+      commit: bf4215a7574f88aa55859db9db00e3ae58cf42d6
 
-  # Use the latest version of SDL3 and SDL2-compat to fix visual gliches
   - name: SDL3
     buildsystem: cmake-ninja
     config-opts:
@@ -144,23 +225,22 @@ modules:
     sources:
       - type: git
         url: https://github.com/libsdl-org/SDL.git
-        tag: release-3.4.8
-        commit: d9d5536704d585616d4db3c8ba3c4ff6fc2757e1
+        tag: release-3.4.18
+        commit: 829a65d769d935c4852f8159e964312c0957260a
 
   - name: sdl2-compat
+    sources:
+      - type: git
+        url: https://github.com/libsdl-org/sdl2-compat
+        tag: release-2.32.74
+        commit: e4df8a55f20da762290a78c2bbe8f8d89d01486a
     buildsystem: cmake-ninja
     config-opts:
       - -DSDL2COMPAT_TESTS=OFF
       - -DCMAKE_INSTALL_LIBDIR=lib
     post-install:
       - mv /app/lib/pkgconfig/sdl2-compat.pc /app/lib/pkgconfig/sdl2.pc
-    sources:
-      - type: git
-        url: https://github.com/libsdl-org/sdl2-compat
-        tag: release-2.32.68
-        commit: 84b4032aef2742f79bd7b4317a22b84b0fe14155
 
-  # NOTE: Undocumented action. Why it is required?
   - name: vulkanso
     buildsystem: simple
     build-commands:
@@ -168,14 +248,13 @@ modules:
 
   - name: chiaki-ng
     buildsystem: cmake-ninja
-    build-options:
-      cflags: -std=gnu11
     builddir: true
+    sources:
+      - type: git
+        url: https://github.com/chiaki-ng/chiaki-ng.git
+        tag: v1.10.1
+        commit: f30da0aaeb96fc0026cc03683153f682352e7d7c
     post-install:
       - install -Dm755 ../scripts/psn-account-id.py /app/bin/psn-account-id
       - install -Dm755 ../scripts/vulkan-gamescope-layers/VkLayer_FROG_gamescope_wsi.x86_64.json
-        -t /app/share/vulkan/implicit_layer.d/
-    sources:
-      - type: git
-        url: https://github.com/streetpea/chiaki-ng.git
-        commit: c8bea2642d0e95402f373af55584a3b98cd89417
+        /app/share/vulkan/implicit_layer.d/VkLayer_FROG_gamescope_wsi.x86_64.json
